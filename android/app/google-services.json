@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "117312699711",
+    "project_id": "jafaapp-84a1d",
+    "storage_bucket": "jafaapp-84a1d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117312699711:android:daf21c3c45bc7b960a678a",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117312699711-6lqpoh7lo7cgudcur5haj8ge2784g46b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByJ3dkoLD1MwzYEeFJtZSyyAeU0KMvjeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117312699711-6lqpoh7lo7cgudcur5haj8ge2784g46b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "117312699711-u5euugvuoh2rgv81b2nqbhql62b82e7k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
