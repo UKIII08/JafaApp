@@ -3,59 +3,85 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart'; // Upewnij się, że ten import jest
 
-// <<< DODAJ TEN IMPORT dla inicjalizacji formatowania daty >>>
+// <<< DODANY IMPORT dla formatowania daty >>>
 import 'package:intl/date_symbol_data_local.dart';
+
+// <<< DODANY IMPORT dla Firebase Messaging >>>
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 // Zaimportuj swoje ekrany i konfigurację Firebase
 import 'login_screen.dart';
 import 'home_screen.dart';
 // import 'firebase_options.dart'; // Odkomentuj jeśli używasz FlutterFire CLI
 
-// --- AuthWrapper musi być gdzieś zdefiniowany ---
-// Możesz go zostawić na dole tego pliku lub przenieść do osobnego pliku i zaimportować
-// import 'auth_wrapper.dart';
+// --- AuthWrapper musi być gdzieś zdefiniowany (np. na dole pliku) ---
 
+// <<< HANDLER WIADOMOŚCI W TLE (NAJWYŻSZY POZIOM) >>>
+// Musi być poza klasą! Adnotacja @pragma jest ważna.
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Ważne: Nie inicjalizuj tutaj FirebaseApp ponownie, jeśli zostało już zainicjowane w main(),
+  // chyba że napotkasz problemy specyficzne dla startu w tle.
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  print("Handling a background message: ${message.messageId}");
+  print("Message data: ${message.data}");
+  if (message.notification != null) {
+    print('Message also contained a notification: ${message.notification?.title} / ${message.notification?.body}');
+  }
+  // Tu można dodać logikę specyficzną dla tła, np. lokalny zapis.
+  // Nie należy tu aktualizować UI.
+}
+
+
+// --- Główna funkcja aplikacji ---
 void main() async {
-  // Ta linia już była:
+  // Inicjalizacja Flutter Binding
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Ta linia już była:
+  // Inicjalizacja Firebase
   await Firebase.initializeApp(
-     // options: DefaultFirebaseOptions.currentPlatform, // Odkomentuj jeśli używasz
+     // options: DefaultFirebaseOptions.currentPlatform, // Odkomentuj jeśli używasz FlutterFire CLI
   );
 
-  // <<< DODANA LINIA - Inicjalizacja dla formatowania daty 'pl_PL' >>>
+  // Inicjalizacja formatowania daty dla języka polskiego
   await initializeDateFormatting('pl_PL', null);
 
-  // Ta linia już była:
+  // <<< ZAREJESTRUJ HANDLER WIADOMOŚCI W TLE >>>
+  // Należy to zrobić po inicjalizacji Firebase, a przed runApp
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Uruchomienie aplikacji
   runApp(const MyApp());
 }
 
-// Klasa MyApp (bez zmian - już zawierała motyw z czcionką Sen)
+// --- Główny Widget Aplikacji (MyApp) ---
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Definiujemy bazowy motyw (możesz tu dodać więcej ustawień)
+    // Definiujemy bazowy motyw
     final ThemeData baseTheme = ThemeData(
       primarySwatch: Colors.blue, // Przykładowy kolor główny
-      // np. scaffoldBackgroundColor: Colors.grey[100],
     );
 
     return MaterialApp(
-      title: 'Logowanie', // Możesz zmienić tytuł aplikacji
+      title: 'Logowanie', // Tytuł aplikacji
       theme: baseTheme.copyWith(
-        // Ustawienie czcionki Sen za pomocą google_fonts (już było)
+        // Ustawienie czcionki Sen
         textTheme: GoogleFonts.senTextTheme(baseTheme.textTheme),
       ),
-      home: const AuthWrapper(), // Kieruje do widgetu sprawdzającego stan logowania
+      // Używamy AuthWrapper do zarządzania stanem logowania
+      home: const AuthWrapper(),
+      // Wyłączenie banera Debug
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-// Widget AuthWrapper (bez zmian)
+// --- Widget AuthWrapper ---
+// Sprawdza stan autentykacji i kieruje do odpowiedniego ekranu
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 
@@ -64,6 +90,7 @@ class AuthWrapper extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
+        // Stan ładowania
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(
@@ -71,6 +98,7 @@ class AuthWrapper extends StatelessWidget {
             ),
           );
         }
+        // Stan błędu
         if (snapshot.hasError) {
           return const Scaffold(
             body: Center(
@@ -78,160 +106,15 @@ class AuthWrapper extends StatelessWidget {
             ),
           );
         }
+        // Sprawdzenie danych użytkownika
         if (snapshot.hasData) {
-          // Zalogowany -> HomeScreen
+          // Zalogowany -> Przejdź do HomeScreen
           return const HomeScreen();
         } else {
-          // Wylogowany -> LoginScreen
+          // Wylogowany -> Przejdź do LoginScreen
           return const LoginScreen();
         }
       },
     );
   }
 }
-
-
-// --- PRZYKŁADOWE EKRANY ---
-// Poniżej znajdują się przykładowe definicje, Twoje powinny być
-// w osobnych plikach (login_screen.dart, home_screen.dart)
-
-/*
-// Przykładowy plik: login_screen.dart
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-// Importuj swoje metody logowania, np. Google Sign-In
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
-  Future<void> _signInWithGoogle() async {
-    try {
-      print('Logika logowania przez Google (do implementacji)...');
-      // Tutaj logika logowania z użyciem FirebaseAuth.instance.signInWithCredential
-    } on FirebaseAuthException catch (e) {
-      print('Błąd logowania Firebase: ${e.code} - ${e.message}');
-    } catch (e) {
-      print('Inny błąd logowania: $e');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Logowanie')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: _signInWithGoogle,
-          child: const Text('Zaloguj się przez Google'),
-        ),
-      ),
-    );
-  }
-}
-*/
-
-/*
-// Przykładowy plik: home_screen.dart
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Potrzebne dla Timestamp
-import 'package:intl/intl.dart'; // Potrzebne dla DateFormat
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
- @override
-  Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final userName = user?.displayName ?? user?.email ?? "Użytkowniku";
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Panel Główny'),
-      ),
-      drawer: Drawer( // Dodany przykładowy Drawer
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.blue),
-              child: Text("Menu - $userName", style: const TextStyle(color: Colors.white, fontSize: 20)),
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text("Ustawienia"),
-              onTap: () { Navigator.pop(context); /* Logika Ustawień */ },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Wyloguj"),
-              onTap: () async {
-                Navigator.pop(context);
-                await FirebaseAuth.instance.signOut();
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Witaj, $userName 👋", style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            Text("Aktualności", style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 10),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('aktualnosci')
-                    .orderBy('publishDate', descending: true) // Używamy 'publishDate'
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    print("Błąd Firestore: ${snapshot.error}");
-                    return const Center(child: Text('Nie można załadować aktualności.'));
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  final docs = snapshot.data?.docs;
-                  if (docs == null || docs.isEmpty) {
-                    return const Center(child: Text("Brak aktualności."));
-                  }
-                  return ListView.builder(
-                    itemCount: docs.length,
-                    itemBuilder: (context, index) {
-                      final data = docs[index].data() as Map<String, dynamic>?;
-                      if (data == null) return const SizedBox.shrink();
-
-                      final title = data['title'] as String? ?? "Bez tytułu";
-                      final content = data['content'] as String? ?? "Brak treści";
-                      final timestamp = data['publishDate'] as Timestamp?; // Używamy 'publishDate'
-                      final formattedDate = timestamp != null
-                          ? DateFormat('dd.MM.yyyy HH:mm', 'pl_PL').format(timestamp.toDate())
-                          : 'Brak daty';
-
-                      return Card(
-                         elevation: 3,
-                         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        child: ListTile(
-                          title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                          subtitle: Text('$content\nOpublikowano: $formattedDate'),
-                          isThreeLine: true,
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-*/
