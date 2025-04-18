@@ -172,11 +172,8 @@ class _SluzbaScreenState extends State<SluzbaScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Służba"),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-             gradient: LinearGradient( colors: [Theme.of(context).primaryColorDark, Theme.of(context).primaryColorLight], begin: Alignment.topLeft, end: Alignment.bottomRight, ),
-          ),
-        ),
+        // Ustawiamy jednolity kolor tła AppBar
+        backgroundColor: Colors.white, // <<< Kolor tła AppBar na biały
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
