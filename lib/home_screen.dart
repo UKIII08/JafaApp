@@ -6,6 +6,8 @@ import 'package:shimmer/shimmer.dart'; // Import dla Shimmer (obecny w Twoim kod
 import 'news_detail_screen.dart'; // Import dla szczegółów (obecny w Twoim kodzie)
 import 'sluzba_screen.dart';
 import 'multimedia_screen.dart';
+import 'wydarzenia_screen.dart';
+import 'wsparcie_screen.dart';
 // import 'package:gradient_glow_border/gradient_glow_border.dart'; // <<< USUNIĘTO BŁĘDNY IMPORT
 // <<< DODANO POPRAWNY IMPORT dla Mesh Gradient >>>
 import 'package:mesh_gradient/mesh_gradient.dart';
@@ -128,7 +130,31 @@ class _HomeScreenState extends State<HomeScreen> {
             // --- Reszta elementów menu bez zmian ---
             ListTile( leading: const Icon(Icons.volunteer_activism_outlined), title: const Text("Służba"), onTap: () { Navigator.pop(context); Navigator.push( context, MaterialPageRoute(builder: (context) => const SluzbaScreen()), ); }, ),
             ListTile( leading: const Icon(Icons.photo_library_outlined), title: const Text("Multimedia"), onTap: () { Navigator.pop(context); Navigator.push( context, MaterialPageRoute(builder: (context) => const MultimediaScreen()), ); }, ),
-            const ListTile( leading: Icon(Icons.settings), title: Text("Ustawienia"), ),
+            // --- KROK 2: Dodaj nowy ListTile dla Wydarzeń ---
+            ListTile(
+              leading: const Icon(Icons.event_available_outlined), // Ikona dla wydarzeń
+              title: const Text("Wydarzenia"),
+              onTap: () {
+                Navigator.pop(context); // Zamknij Drawer
+                Navigator.push( // Przejdź do WydarzeniaScreen
+                  context,
+                  MaterialPageRoute(builder: (context) => const WydarzeniaScreen()),
+                );
+              },
+            ),
+            // -------------------------------------------------
+ListTile(
+  leading: const Icon(Icons.favorite_border_outlined), // Ikona serca lub inna pasująca
+  title: const Text("Wsparcie"),
+  onTap: () {
+    Navigator.pop(context); // Zamknij Drawer
+    Navigator.push( // Przejdź do WsparcieScreen
+      context,
+      MaterialPageRoute(builder: (context) => const WsparcieScreen()),
+    );
+  },
+),
+            const Divider(), // Opcjonalny separator
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("Wyloguj"),

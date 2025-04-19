@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
               options: AnimatedMeshGradientOptions(
                 // Możesz dostosować czas trwania, jeśli chcesz wolniejszą/szybszą animację
                 // Eksperymentuj z tymi wartościami dla subtelniejszego efektu:
-                // frequency: 0.1, // Mniejsza częstotliwość = większe, łagodniejsze plamy
+                //frequency: 0.7, // Mniejsza częstotliwość = większe, łagodniejsze plamy
                 // amplitude: 0.3, // Mniejsza amplituda = mniej intensywne mieszanie
                 // seed: 3,      // Zmień ziarno dla innego wzoru
               ),

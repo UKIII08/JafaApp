@@ -46,6 +46,7 @@ dependencies:
   shared_preferences: ^2.5.3
   mesh_gradient: ^1.3.8
   flutter_launcher_icons: ^0.14.3
+  zo_animated_border: ^0.0.6
 
 dev_dependencies:
   flutter_test:
