@@ -2,7 +2,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Potrzebne do _fetchUserName
+// Potrzebne do _fetchUserName
 import 'package:intl/intl.dart';
 
 class WydarzenieDetailScreen extends StatefulWidget {

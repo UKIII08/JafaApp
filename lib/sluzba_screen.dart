@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
-import 'dart:math' as math; // Potrzebne dla RotationTransition
+// Potrzebne dla RotationTransition
 
 // <<< Jeśli będziesz implementować Shimmer, dodaj import >>>
 // import 'package:shimmer/shimmer.dart';
@@ -119,14 +119,14 @@ class _CustomGradientExpansionTileState extends State<CustomGradientExpansionTil
     Widget expandableContent = AnimatedCrossFade(
       firstChild: Container(height: 0.0), // Pusty kontener, gdy zwinięte
       secondChild: Container(
-         color: theme.cardColor, // Upewnij się, że tło dzieci jest białe/kolor karty
-         width: double.infinity, // Pełna szerokość
-         padding: widget.childrenPadding,
-         child: Column(
-           crossAxisAlignment: widget.expandedCrossAxisAlignment,
-           children: widget.children,
-         ),
-       ),
+          color: theme.cardColor, // Upewnij się, że tło dzieci jest białe/kolor karty
+          width: double.infinity, // Pełna szerokość
+          padding: widget.childrenPadding,
+          child: Column(
+            crossAxisAlignment: widget.expandedCrossAxisAlignment,
+            children: widget.children,
+          ),
+        ),
       crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       duration: widget.animationDuration,
       sizeCurve: Curves.easeInOut, // Animacja zmiany rozmiaru
@@ -207,7 +207,7 @@ class _SluzbaScreenState extends State<SluzbaScreen> {
              childrenPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0).copyWith(top: 8.0),
              expandedCrossAxisAlignment: CrossAxisAlignment.start,
              children: [
-               // Zawartość ExpansionTile: Ogłoszenia, Divider, Materiały - BEZ ZMIAN
+               // Zawartość ExpansionTile: Ogłoszenia, Divider, Materiały
 
                // --- Sekcja Ogłoszeń ---
                _buildSectionTitle(context, "Ogłoszenia"),
@@ -221,7 +221,7 @@ class _SluzbaScreenState extends State<SluzbaScreen> {
                  builder: (context, announcementSnapshot) {
                    // Logika ładowania, błędów, braku danych - BEZ ZMIAN
                     if (announcementSnapshot.connectionState == ConnectionState.waiting) {
-                     return const Center(child: Padding( padding: EdgeInsets.symmetric(vertical: 16.0), child: CircularProgressIndicator(strokeWidth: 2.0), ));
+                      return const Center(child: Padding( padding: EdgeInsets.symmetric(vertical: 16.0), child: CircularProgressIndicator(strokeWidth: 2.0), ));
                    }
                    if (announcementSnapshot.hasError) {
                      print("Błąd pobierania ogłoszeń dla roli '$role': ${announcementSnapshot.error}");
@@ -231,7 +231,7 @@ class _SluzbaScreenState extends State<SluzbaScreen> {
                      return _buildNoDataText("Brak aktualnych ogłoszeń.");
                    }
                    final announcementDocs = announcementSnapshot.data!.docs;
-                   // Wyświetlanie ogłoszeń - BEZ ZMIAN
+                   // Wyświetlanie ogłoszeń
                    return Column(
                      children: announcementDocs.map((doc) {
                        final data = doc.data() as Map<String, dynamic>? ?? {};
@@ -244,19 +244,25 @@ class _SluzbaScreenState extends State<SluzbaScreen> {
                        }
                        return Card(
                          elevation: 0.5,
-                         color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                         // *** ZMIENIONY KOLOR TŁA ***
+                         color: Theme.of(context).colorScheme.surfaceContainerLow,
+                         // Alternatywy (jeśli powyższe nie pasuje):
+                         // color: Theme.of(context).colorScheme.surfaceContainerLowest,
+                         // color: Colors.grey[100],
+                         // color: Colors.grey[200],
+                         // *****************************
                          margin: const EdgeInsets.only(bottom: 12.0),
                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                          child: Padding(
                            padding: const EdgeInsets.all(12.0),
                            child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
+                             crossAxisAlignment: CrossAxisAlignment.stretch, // Pozostaje stretch
                              children: [
                                Text( title, style: Theme.of(context).textTheme.titleMedium?.copyWith( fontWeight: FontWeight.bold, ), ),
                                if (formattedDate.isNotEmpty)
                                  Padding( padding: const EdgeInsets.only(top: 4.0, bottom: 8.0), child: Text( formattedDate, style: TextStyle( fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.7)), ), )
                                else if (content.isNotEmpty)
-                                 const SizedBox(height: 8),
+                                 const SizedBox(height: 8), // Dodaj odstęp jeśli nie ma daty, a jest treść
                                Text( content, style: Theme.of(context).textTheme.bodyMedium, ),
                              ],
                            ),
@@ -281,7 +287,7 @@ class _SluzbaScreenState extends State<SluzbaScreen> {
                  builder: (context, snapshot) {
                    // Logika ładowania, błędów, braku danych - BEZ ZMIAN
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                     return const Center(child: Padding( padding: EdgeInsets.symmetric(vertical: 16.0), child: CircularProgressIndicator(strokeWidth: 2.0), ));
+                      return const Center(child: Padding( padding: EdgeInsets.symmetric(vertical: 16.0), child: CircularProgressIndicator(strokeWidth: 2.0), ));
                    }
                    if (snapshot.hasError) {
                      print("Błąd pobierania materiałów dla roli '$role': ${snapshot.error}");
@@ -314,7 +320,7 @@ class _SluzbaScreenState extends State<SluzbaScreen> {
                ), // Koniec StreamBuilder Materiałów
                const SizedBox(height: 8),
              ], // Koniec children CustomGradientExpansionTile
-          ), // Koniec CustomGradientExpansionTile
+           ), // Koniec CustomGradientExpansionTile
         ); // Koniec Card
       }, // Koniec itemBuilder
     ); // Koniec ListView.builder
