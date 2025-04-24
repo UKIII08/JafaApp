@@ -32,7 +32,7 @@ class _WydarzeniaCalendarScreenState extends State<WydarzeniaCalendarScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  LinkedHashMap<DateTime, List<Event>> _events = LinkedHashMap<DateTime, List<Event>>(
+  final LinkedHashMap<DateTime, List<Event>> _events = LinkedHashMap<DateTime, List<Event>>(
     equals: isSameDay,
     hashCode: (key) => key.day * 1000000 + key.month * 10000 + key.year,
   );

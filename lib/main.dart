@@ -7,7 +7,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 // Import firebase_admin tylko jeśli jest rzeczywiście potrzebny i skonfigurowany
 // import 'package:firebase_admin/firebase_admin.dart';
-import 'package:flutter/foundation.dart';
 
 // Importy ekranów
 import 'login_screen.dart';
