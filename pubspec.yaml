@@ -51,7 +51,9 @@ dependencies:
   cloud_functions: ^5.4.0
   firebase_admin: ^0.3.0+2
   snapshot: ^0.2.6+2
-
+  table_calendar: ^3.0.8
+  gradient_borders: ^1.0.1
+  awesome_snackbar_content: ^0.1.1
 
 dev_dependencies:
   flutter_test:

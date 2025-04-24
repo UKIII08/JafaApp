@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    const Color blueAccentColor = Color.fromARGB(255, 109, 196, 223);
+    const Color blueAccentColor = Color.fromARGB(255, 133, 221, 235);
     const Color offWhiteColor = Color(0xFFFAFAFA);
 
     return Scaffold(
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               colors: const [
                 Colors.white,
                 offWhiteColor,
-                blueAccentColor,
+                Color.fromARGB(255, 25, 222, 248),
                 Colors.white,
               ],
               options: AnimatedMeshGradientOptions(),
