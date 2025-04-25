@@ -21,7 +21,7 @@ class InformacjeScreen extends StatelessWidget {
       "Niniejsza Polityka prywatności opisuje zasady przetwarzania danych osobowych w aplikacji mobilnej „JafaApp”.\n\n"
       "### 1. Administrator danych\n\n"
       "Administratorem danych osobowych jest: \n"
-      "[Tu wpisz nazwę organizacji lub osobę odpowiedzialną, np. Fundacja Jafa Warszawa, z adresem e-mail do kontaktu]\n\n"
+      "Fundacja Jafa Warszawa\n\n"
       "### 2. Jakie dane przetwarzamy?\n\n"
       "Aplikacja korzysta z Firebase Authentication firmy Google, co oznacza, że przy logowaniu możemy przetwarzać następujące dane:\n"
       "- Imię i nazwisko (jeśli dostępne w koncie Google),\n"
@@ -51,12 +51,7 @@ class InformacjeScreen extends StatelessWidget {
       "Polityka może być aktualizowana – nowa wersja będzie dostępna w aplikacji.\n\n"
       "---\n\n"
       "Jeśli masz pytania dotyczące ochrony danych osobowych, skontaktuj się z nami: \n"
-      "[tu wpisz adres e-mail]\n\n"
-      "**Informacja RODO**\n\n"
-      "Administratorem Twoich danych osobowych jest [nazwa organizacji / osoba prywatna]. Twoje dane są przetwarzane w celu umożliwienia logowania i korzystania z aplikacji „JafaApp”, zgodnie z art. 6 ust. 1 lit. a i f RODO.\n\n"
-      "Masz prawo dostępu do danych, ich poprawienia, usunięcia, ograniczenia przetwarzania, sprzeciwu oraz wniesienia skargi do Prezesa UODO.\n\n"
-      "Kontakt z administratorem: [adres e-mail]";
-
+      "jafawarszawa@gmail.com\n\n";
 
   final String umowaUzytkowaniaText =
       "# Umowa licencyjna użytkownika końcowego (EULA)\n\n"
@@ -89,7 +84,6 @@ class InformacjeScreen extends StatelessWidget {
       "---\n\n"
       "Dziękujemy za korzystanie z JafaApp!";
 
-
   // --- KONIEC TEKSTÓW ---
 
   // Funkcja pomocnicza do budowania logo (bez zmian)
@@ -99,7 +93,12 @@ class InformacjeScreen extends StatelessWidget {
       height: height,
       errorBuilder: (context, error, stackTrace) {
         print("Błąd ładowania logo w InformacjeScreen: $error");
-        return SizedBox(height: height, child: const Center(child: Icon(Icons.image_not_supported, color: Colors.grey)));
+        return SizedBox(
+          height: height,
+          child: const Center(
+            child: Icon(Icons.image_not_supported, color: Colors.grey),
+          ),
+        );
       },
     );
   }
@@ -115,11 +114,8 @@ class InformacjeScreen extends StatelessWidget {
       Color.fromARGB(255, 133, 221, 235),
     ];
 
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Informacje'),
-      ),
+      appBar: AppBar(title: const Text('Informacje')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -130,39 +126,45 @@ class InformacjeScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 24.0), // Odstęp
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                gradient: const LinearGradient( // Używamy gradientu
+                gradient: const LinearGradient(
+                  // Używamy gradientu
                   colors: gradientColors,
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: cardBorderRadius, // Zaokrąglenie
-                boxShadow: [ // Subtelny cień
+                boxShadow: [
+                  // Subtelny cień
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
-                  )
-                ]
+                  ),
+                ],
               ),
               child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
-                    Text( // Nagłówek
-                      'O wspólnocie Jafa',
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white, // Biały tekst na gradiencie
-                      ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    // Nagłówek
+                    'O wspólnocie Jafa',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white, // Biały tekst na gradiencie
                     ),
-                    const SizedBox(height: 12),
-                    Text( // Treść
-                      oJafieText,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        height: 1.5,
-                        color: Colors.white.withOpacity(0.95), // Lekko przezroczysty biały
-                      ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    // Treść
+                    oJafieText,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      height: 1.5,
+                      color: Colors.white.withOpacity(
+                        0.95,
+                      ), // Lekko przezroczysty biały
                     ),
-                 ],
+                  ),
+                ],
               ),
             ),
             // --- KONIEC ZMIANY ---
@@ -173,10 +175,16 @@ class InformacjeScreen extends StatelessWidget {
                 'Informacja RODO',
                 style: theme.textTheme.titleMedium, // Użyto titleMedium
               ),
-              leading: Icon(Icons.security_outlined, color: theme.colorScheme.secondary),
+              leading: Icon(
+                Icons.security_outlined,
+                color: theme.colorScheme.secondary,
+              ),
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0).copyWith(top: 0, bottom: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ).copyWith(top: 0, bottom: 16.0),
                   child: SelectableText(
                     rodoText,
                     style: theme.textTheme.bodyMedium?.copyWith(height: 1.4),
@@ -187,51 +195,60 @@ class InformacjeScreen extends StatelessWidget {
             const Divider(height: 1),
 
             // Sekcja Polityka Prywatności (bez zmian w strukturze, tylko styl tytułu)
-             ExpansionTile(
-               title: Text(
-                 'Polityka Prywatności',
-                 style: theme.textTheme.titleMedium, // Użyto titleMedium
-               ),
-               leading: Icon(Icons.privacy_tip_outlined, color: theme.colorScheme.secondary),
-               children: <Widget>[
-                  Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0).copyWith(top: 0, bottom: 16.0),
-                   child: SelectableText(
-                     politykaPrywatnosciText,
-                     style: theme.textTheme.bodyMedium?.copyWith(height: 1.4),
-                   ),
-                 ),
-               ],
-             ),
-             const Divider(height: 1),
+            ExpansionTile(
+              title: Text(
+                'Polityka Prywatności',
+                style: theme.textTheme.titleMedium, // Użyto titleMedium
+              ),
+              leading: Icon(
+                Icons.privacy_tip_outlined,
+                color: theme.colorScheme.secondary,
+              ),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ).copyWith(top: 0, bottom: 16.0),
+                  child: SelectableText(
+                    politykaPrywatnosciText,
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.4),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(height: 1),
 
             // Sekcja Regulamin Aplikacji (bez zmian w strukturze, tylko styl tytułu)
-             ExpansionTile(
-               title: Text(
-                 'Regulamin Aplikacji',
-                 style: theme.textTheme.titleMedium, // Użyto titleMedium
-               ),
-               leading: Icon(Icons.gavel_outlined, color: theme.colorScheme.secondary),
-               children: <Widget>[
-                  Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0).copyWith(top: 0, bottom: 16.0),
-                    child: SelectableText(
-                     umowaUzytkowaniaText,
-                     style: theme.textTheme.bodyMedium?.copyWith(height: 1.4),
-                   ),
-                 ),
-               ],
-             ),
-             const Divider(height: 1),
+            ExpansionTile(
+              title: Text(
+                'Regulamin Aplikacji',
+                style: theme.textTheme.titleMedium, // Użyto titleMedium
+              ),
+              leading: Icon(
+                Icons.gavel_outlined,
+                color: theme.colorScheme.secondary,
+              ),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ).copyWith(top: 0, bottom: 16.0),
+                  child: SelectableText(
+                    umowaUzytkowaniaText,
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.4),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(height: 1),
 
             // Logo na dole (bez zmian)
             Padding(
               padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
-              child: Center(
-                child: buildLogo(60),
-              ),
+              child: Center(child: buildLogo(60)),
             ),
-
           ],
         ),
       ),

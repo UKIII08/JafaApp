@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 // Import firebase_admin tylko jeśli jest rzeczywiście potrzebny i skonfigurowany
 // import 'package:firebase_admin/firebase_admin.dart';
 
@@ -58,6 +59,28 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Zainicjalizuj Firebase
   await Firebase.initializeApp();
+  // <<< DODAJ TEN BLOK >>>
+try {
+  final remoteConfig = FirebaseRemoteConfig.instance;
+  // Ustaw rozsądne interwały pobierania, aby uniknąć zbyt częstych zapytań
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(hours: 1), // Jak często sprawdzać aktualizacje
+  ));
+  // Ustaw wartości domyślne (opcjonalnie, ale dobra praktyka)
+  await remoteConfig.setDefaults(const {
+    "google_books_api_key": "TWOJ_DOMYSLNY_KLUCZ_API_LUB_PUSTY_STRING", // Możesz tu dać pusty string lub stary klucz jako fallback
+  });
+  // Pobierz najnowsze wartości z serwera
+  await remoteConfig.fetchAndActivate();
+  print('Remote Config fetched and activated.');
+  // Możesz sprawdzić pobrany klucz (tylko do debugowania)
+  // print('Pobrany klucz API: ${remoteConfig.getString("google_books_api_key")}');
+} catch (e) {
+  print('Nie udało się zainicjalizować Firebase Remote Config: $e');
+  // Rozważ obsługę błędu, np. wyświetlenie komunikatu użytkownikowi
+}
+// <<< KONIEC BLOKU >>>
   // Zainicjalizuj formatowanie dat dla języka polskiego
   await initializeDateFormatting('pl_PL', null);
   // Ustaw handler dla wiadomości FCM w tle
